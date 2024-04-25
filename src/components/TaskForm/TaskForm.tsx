@@ -1,19 +1,23 @@
-import React, { BaseSyntheticEvent } from 'react';
+import { BaseSyntheticEvent } from 'react';
 
 type Props = {
+  editTaskId: number | null,
   dateValue: string,
   descValue: string,
   onChangeDate: (e: BaseSyntheticEvent) => void,
   onChangeDesc: (e: BaseSyntheticEvent) => void,
   onSubmit: (e: BaseSyntheticEvent) => void,
+  onDelete: () => void,
 }
 
 const TaskForm = ({
+  editTaskId,
   dateValue,
   descValue,
   onChangeDate,
   onChangeDesc,
-  onSubmit
+  onSubmit,
+  onDelete
 }: Props) => {
   return (
     <form className="add-task-form" id="add-task-form" onSubmit={onSubmit}>
@@ -33,7 +37,21 @@ const TaskForm = ({
         placeholder="Task Description"
         />
       {/* TODO: Move to a separate UI component */}
-      <button className="task-btn" type="submit">Add Task</button>
+      <button
+        className="task-btn"
+        type="submit"
+        disabled={descValue.length === 0}
+      >
+        {editTaskId ? 'Edit' : 'Add'} Task
+      </button>
+      {editTaskId !== null && (
+        <button
+          className="task-btn task-delete"
+          type="button"
+          onClick={onDelete}
+        >
+          Delete
+        </button>)}
     </form>
   );
 };
